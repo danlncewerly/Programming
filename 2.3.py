@@ -1,52 +1,36 @@
-def check(string):
+def check(string):#Функция для проверки корректности скобок
     str1 = []
-    pairs = {
-        ')': '(',
-        '}': '{',
-        ']': '['
+    pairs = {"(": ")",
+            "[": "]",
+            "{": "}"
             }
     for i in string:
-        if i in '({[':
+        if i in pairs.keys():
             str1.append(i)
-        elif i in ')}]':
-            if not str1 or str1[-1] != pairs[i]:
+        elif i in pairs.values():
+            if not str1 or pairs[str1.pop()] != i:
                 return False
-            str1.pop()
     return len(str1) == 0
 
-def longest_string(string):
-    str2 = []
-    pairs = {
-        ')': '(',
-        '}': '{',
-        ']': '['
-        }
-    longest_str2 = ""
-    current_str2 = ""
-    for i in string:
-        if i in '({[':
-            str2.append(i)
-            current_str2 += i
-        elif i in ')}]':
-            if not str2 or str2[-1] != pairs[i]:
-                str2 = []
-                current_str2 = ""
-            else:
-                str2.pop()
-                current_str2 += i
-            if len(current_str2) > len(longest_str2):
-                longest_str2 = current_str2
-    if longest_str2 == "":
-        return False
-    return longest_str2
-if __name__ == '__main__':
-    s = input("Введите строку скобок: ")
 
-    if check(s):
-        print(True)
+def longest_string(string):#Функция для нахождения самой длинной подстроки
+    if check(string):
+        return True
     else:
-        max_string = longest_string(s)
-        if max_string:
-            print(max_string)
+        str2 = ""
+        n = 0
+        for i in range(len(string)-1):
+            for j in range(i+1, len(string)):
+                if check(string[i:j]):
+                    if n < len(string[i:j]):
+                        n = len(string[i:j])
+                        str2 = string[i:j]
+        if str2:
+            return str2
         else:
-            print(False)
+            return False
+
+if __name__ == "__main__":
+    s=input('Введите строку')
+    print(longest_string(s))
+
